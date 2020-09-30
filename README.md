@@ -1,8 +1,6 @@
-# PoolTogether Buidler Console
+# PoolTogether Custom Prize Strategy
 
-Easily interact with PoolTogether contracts using a node repl.
-
-This project is a basic [Buidler](https://buidler.dev/) project that users Ethers.js and includes the PoolTogether contracts.
+Example project demonstrating a custom prize strategy.  Fork this project to easily create and test your own prize stratgies.
 
 ## Setup
 
@@ -26,52 +24,42 @@ Now enable the env vars using [direnv](https://direnv.net/docs/installation.html
 $ direnv allow
 ```
 
-## Console
+### Setup PoolTogether Contracts as a separate project
 
-Load up the Buidler console.  It will connect to Rinkeby by default:
+Clone the [PoolTogether Contracts](https://github.com/pooltogether/pooltogether-pool-contracts/tree/version-3) repository in another directory:
 
-```bash
-$ buidler console
+```
+$ cd ..
+$ yarn clone git@github.com:pooltogether/pooltogether-pool-contracts.git
+$ cd pooltogether-pool-contracts
+$ git checkout version-3
 ```
 
-Grab the Contract loader helpers:
+Notice that we check out the `version-3` branch.
 
-```js
-> const { poolAt, singleRandomWinnerAt, erc20At } = require('./loaders')
+**Setup the main PT contracts as directed by its README**
+
+Now start a local node:
+
+```
+$ yarn start
 ```
 
-These helpers will instantiate Ethers.js [Contract](https://docs.ethers.io/v5/api/contract/) objects.
+You should now have a local node running that is fully bootstrapped with:
 
-Now let's start talking a pool that was created using the [Prize Pool Builder](https://builder.pooltogether.com):
+- PoolTogether contracts
+- Mock DAI
+- Mock Compound cDai
+- Mock yEarn yDAI Vault
 
-```js
-> pool = await poolAt('0xe6D68A3295Ba8ce28B5F21cBCEc562c804DF6e5F')
+### Deploy the Custom Prize Strategy
+
+```
+$ yarn deploy-pt
 ```
 
-Let's also connect to its prize strategy:
+This will compile and deploy the contracts against the local node started in the other project.
 
-```js
-> prizeStrategy = await singleRandomWinnerAt('0xed7E59eFffF107E0424931D76bE2De6cF42E6F73')
-```
+### Test it out!
 
-If you've configured the mnemonic in the envrc to be the owner of the pool and strategy, you can configure them now!
-
-## External ERC20 Award
-
-The Single Random Winner can award (almost) any tokens held by the Prize Pool to the winner.  Let's award Compound Rinkeby Dai to the winner.
-
-In the Buidler console, add Dai (Compound Rinkeby version) as an external ERC20 award to the strategy:
-
-```js
-> await ps.addExternalErc20Award('0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa')
-```
-
-Now transfer 50 Dai to the prize pool:
-
-```js
-> dai = await erc20At('0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa')
-> await dai.transfer(pool.address, ethers.utils.parseEther('50'))
-```
-
-Next time the prize strategy awards the prize, it'll also give away 50 dai!
-
+Create a prize pool in the normal way, and then try swapping out the strategy!
