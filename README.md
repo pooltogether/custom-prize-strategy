@@ -37,7 +37,7 @@ $ git checkout version-3
 
 Notice that we check out the `version-3` branch.
 
-**Setup the main PT contracts as directed by its README**
+**Follow the setup instruction in the [README](https://github.com/pooltogether/pooltogether-pool-contracts/tree/version-3)**
 
 Now start a local node:
 
