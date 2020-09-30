@@ -3,10 +3,11 @@
 pragma solidity ^0.6.12;
 
 import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
+import "@nomiclabs/buidler/console.sol";
 
 contract MultipleWinners is PeriodicPrizeStrategy {
 
-  uint256 numberOfWinners;
+  uint256 public numberOfWinners;
 
   function initialize(
     address _trustedForwarder,
@@ -36,23 +37,34 @@ contract MultipleWinners is PeriodicPrizeStrategy {
   function _distribute(uint256 randomNumber) internal override {
     uint256 prize = prizePool.captureAwardBalance();
 
+    console.log("First winner: ", randomNumber);
+
     // main winner gets all external tokens
     address mainWinner = ticket.draw(randomNumber);
     _awardAllExternalTokens(mainWinner);
 
     // yield prize is split up
     // Track nextPrize and prize separately to eliminate dust
-    uint256 share = prize.div(numberOfWinners);
-    uint256 dust = prize.sub(share.mul(numberOfWinners));
+    uint256 prizeShare = prize.div(numberOfWinners);
 
-    // main winner gets their share plus the dust
-    _awardTickets(mainWinner, share.add(dust));
+    console.log("prizeShare: ", prizeShare);
 
-    uint256 split = IERC20(address(ticket)).totalSupply().div(numberOfWinners);
-    // the other winners receive their shares
-    for (uint256 winnerCount = 1; winnerCount < numberOfWinners; winnerCount++) {
-      address nextWinner = ticket.draw(randomNumber.add(split.mul(winnerCount)));
-      _awardTickets(nextWinner, share);
+    uint256 totalSupply = IERC20(address(ticket)).totalSupply();
+    uint256 ticketSplit = totalSupply.div(numberOfWinners);
+
+    console.log("numberOfWinners: ", numberOfWinners);
+    console.log("totalSupply: ", totalSupply);
+    console.log("ticketSplit: ", ticketSplit);
+
+    uint256 nextRandom = randomNumber.add(ticketSplit);
+    // the other winners receive their prizeShares
+    for (uint256 winnerCount = 0; winnerCount < numberOfWinners; winnerCount++) {
+      console.log("WinnerCount, random number: ", winnerCount, nextRandom);
+      address nextWinner = ticket.draw(nextRandom);
+      console.log("nextWinner: ", nextWinner);
+      nextRandom = nextRandom.add(ticketSplit);
+      console.log("nextRandom: ", nextRandom);
+      _awardTickets(nextWinner, prizeShare);
     }
   }
 }

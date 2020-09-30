@@ -1,2 +1,0 @@
-export HDWALLET_MNEMONIC="<mnemonic>"
-export INFURA_API_KEY="<apikey>"
