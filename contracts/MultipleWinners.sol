@@ -3,7 +3,6 @@
 pragma solidity ^0.6.12;
 
 import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
-import "@nomiclabs/buidler/console.sol";
 
 contract MultipleWinners is PeriodicPrizeStrategy {
 
@@ -37,34 +36,28 @@ contract MultipleWinners is PeriodicPrizeStrategy {
   function _distribute(uint256 randomNumber) internal override {
     uint256 prize = prizePool.captureAwardBalance();
 
-    console.log("First winner: ", randomNumber);
-
     // main winner gets all external tokens
     address mainWinner = ticket.draw(randomNumber);
     _awardAllExternalTokens(mainWinner);
+
+    address[] memory winners = new address[](numberOfWinners);
+    winners[0] = mainWinner;
+
+    uint256 totalSupply = IERC20(address(ticket)).totalSupply();
+    uint256 ticketSplit = totalSupply.div(numberOfWinners);
+    uint256 nextRandom = randomNumber.add(ticketSplit);
+    // the other winners receive their prizeShares
+    for (uint256 winnerCount = 1; winnerCount < numberOfWinners; winnerCount++) {
+      winners[winnerCount] = ticket.draw(nextRandom);
+      nextRandom = nextRandom.add(ticketSplit);
+    }
 
     // yield prize is split up
     // Track nextPrize and prize separately to eliminate dust
     uint256 prizeShare = prize.div(numberOfWinners);
 
-    console.log("prizeShare: ", prizeShare);
-
-    uint256 totalSupply = IERC20(address(ticket)).totalSupply();
-    uint256 ticketSplit = totalSupply.div(numberOfWinners);
-
-    console.log("numberOfWinners: ", numberOfWinners);
-    console.log("totalSupply: ", totalSupply);
-    console.log("ticketSplit: ", ticketSplit);
-
-    uint256 nextRandom = randomNumber.add(ticketSplit);
-    // the other winners receive their prizeShares
-    for (uint256 winnerCount = 0; winnerCount < numberOfWinners; winnerCount++) {
-      console.log("WinnerCount, random number: ", winnerCount, nextRandom);
-      address nextWinner = ticket.draw(nextRandom);
-      console.log("nextWinner: ", nextWinner);
-      nextRandom = nextRandom.add(ticketSplit);
-      console.log("nextRandom: ", nextRandom);
-      _awardTickets(nextWinner, prizeShare);
+    for (uint i = 0; i < numberOfWinners; i++) {
+      _awardTickets(winners[i], prizeShare);
     }
   }
 }
