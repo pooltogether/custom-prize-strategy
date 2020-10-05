@@ -62,9 +62,9 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
 
 /// @notice Completes the award process and awards the winners.
 // Because randomNumber isn't used, startAward function is not needed
-function completeAward(string winningAsset) external requireCanCompleteAward {
+function completeAward(string winningAsset) external override requireCanCompleteAward {
   // string winningAsset = calculateWinningAsset();
-  // for initial testing, assetSymbol is passed in manually 
+  // for initial testing, assetSymbol is passed in manually
 
   _distribute(winningAsset);
 
