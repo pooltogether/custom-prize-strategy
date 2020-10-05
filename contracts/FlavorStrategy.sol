@@ -42,8 +42,9 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
 
   function addPodAddress(string assetSymbol, address podAddress) public onlyOwner {
     // only owner can add pod addresses
-    require(!podAddresses[assetSymbol])
+    require(!podAddresses[assetSymbol]);
     podAddresses[assetSymbol] = podAddress;
+    assetSymbols.push(assetSymbol);
   }
 
   function startPrizePeriod internal {
