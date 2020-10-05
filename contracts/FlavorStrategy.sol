@@ -10,7 +10,7 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
   // mapping from asset symbol to pod pod address
   mapping(string => address) public podAddresses;
   // mapping storing asset prices at start of prize period
-  mapping(string => uint256) publi startPrizePeriodPrices;
+  mapping(string => uint256) public startPrizePeriodPrices;
 
   string[] assetSymbols;
 
