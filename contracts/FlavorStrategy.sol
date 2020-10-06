@@ -3,7 +3,6 @@
 pragma solidity ^0.6.12;
 import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
 import "@nomiclabs/buidler/console.sol";
-import "./Ownable.sol";
 
 contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
 
@@ -22,8 +21,9 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
     address _ticket,
     address _sponsorship,
     RNGInterface _rng,
-    address[] memory _externalErc20s,
+    address[] memory _externalErc20s
   ) public initializer {
+    __Ownable_init();
     // TODO: rng isn't needed for flavor strategy
     PeriodicPrizeStrategy.initialize(
       _trustedForwarder,
@@ -47,7 +47,7 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
     assetSymbols.push(assetSymbol);
   }
 
-  function startPrizePeriod internal {
+  function startPrizePeriod() internal {
     // TODO: get oracle price feed data, or get it passed in by completeAward
       for (uint i=0; i<assetSymbols.length; i++) {
         uint256 assetPrice = i * 100; // placeholder value for testing
@@ -55,7 +55,7 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
       }
   }
 
-  function calculateWinningAsset internal returns (string) {
+  function calculateWinningAsset() internal returns (string) {
     // TODO: for each asset in assetSymbols, get latest price from oracle
     // calculate percentage change compared to startPrizePeriodPrices
     // return assetSymbol with greatest calculated value
