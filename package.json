@@ -19,6 +19,7 @@
     "solc": "0.6.12"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.0.10",
     "@pooltogether/pooltogether-contracts": "^3.0.0-alpha.39"
   }
 }

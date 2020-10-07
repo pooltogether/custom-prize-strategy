@@ -3,15 +3,31 @@
 pragma solidity ^0.6.12;
 import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
 import "@nomiclabs/buidler/console.sol";
+import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
 
 contract FlavorStrategy is PeriodicPrizeStrategy {
 
-  // mapping from asset symbol to pod pod address
+  // mapping from asset symbol to pod address
   mapping(string => address) public podAddresses;
   // mapping storing asset prices at start of prize period
   mapping(string => uint256) public startPrizePeriodPrices;
 
   string[] assetSymbols;
+
+  AggregatorV3Interface internal priceFeed;
+
+  constructor() public {
+    // Kovan price feeds
+    ethPriceFeed = AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331)
+    btcPriceFeed = AggregatorV3Interface(0x6135b13325bfC4B00278B4abC5e20bbce2D6580e)
+    snxPriceFeed = AggregatorV3Interface(0x31f93DA9823d737b7E44bdee0DF389Fe62Fd1AcD)
+
+    // Mainnet price feeds
+    // ethPriceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419)
+    // btcPriceFeed = AggregatorV3Interface(0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c)
+    // snxPriceFeed = AggregatorV3Interface(0x79291A9d692Df95334B1a0B3B4AE6bC606782f8c)
+
+  }
 
   function initialize(
     address _trustedForwarder,
@@ -44,6 +60,78 @@ contract FlavorStrategy is PeriodicPrizeStrategy {
     require(!podAddresses[assetSymbol]);
     podAddresses[assetSymbol] = podAddress;
     assetSymbols.push(assetSymbol);
+  }
+
+  function getEthPrice() public view returns (int) {
+    (
+      uint80 roundID, 
+      int price,
+      uint startedAt,
+      uint timeStamp,
+      uint80 answeredInRound
+    ) = ethPriceFeed.latestRoundData();
+    // If the round is not complete yet, timestamp is 0
+    require(timeStamp > 0, "Round not complete");
+    return price;
+  }
+
+  function getBtcPrice() public view returns (int) {
+    (
+      uint80 roundID, 
+      int price,
+      uint startedAt,
+      uint timeStamp,
+      uint80 answeredInRound
+    ) = btcPriceFeed.latestRoundData();
+    // If the round is not complete yet, timestamp is 0
+    require(timeStamp > 0, "Round not complete");
+    return price;
+  }
+
+  function getAavePrice() public view returns (int) {
+    (
+      uint80 roundID, 
+      int price,
+      uint startedAt,
+      uint timeStamp,
+      uint80 answeredInRound
+    ) = aavePriceFeed.latestRoundData();
+    // If the round is not complete yet, timestamp is 0
+    require(timeStamp > 0, "Round not complete");
+    return price;
+  }
+
+  struct Asset {
+    uint price;
+    string name;
+  
+  }
+  function getAssetPrices() internal returns (Asset[]) {
+    Asset[] assetPrices
+
+    for (uint i = 0; i < assetSymbols.length, i++) {
+      require(assetSymbols[i] == "ETH/USD" || assetSymbols[i] == "BTC/USD" || assetSymbols[i] == "SNX/USD" )
+
+      if (assetSymbols[i] == "ETH/USD") {
+        Asset storage a;
+        ethPrice = getEthPrice()
+        a.price = ethPrice
+        a.name = "ETH/USD"
+        assetPrices.push(a)
+      } else if (assetSymbols[i] == "BTC/USD") {
+        Asset storage a;
+        btcPrice = getBtcPrice()
+        a.price = btcPrice
+        a.name = "BTC/USD"
+        assetPrices.push(a)
+      } else if (assetSymbols[i] == "SNX/USD") {
+        Asset storage a;
+        snxPrice = getSnxPrice()
+        a.price = snxPrice
+        a.name = "SNX/USD"
+        assetPrices.push(a)
+      }
+    }
   }
 
   function startPrizePeriod() internal {
