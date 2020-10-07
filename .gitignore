@@ -10,6 +10,7 @@ dist
 coverage
 coverage.json
 .envrc
+.env
 .openzeppelin/dev-*
 .openzeppelin/.session
 .oz-migrate/dev-*
@@ -20,3 +21,4 @@ deployments/local*
 deployments/pt*
 Networks.md
 .vscode
+yarn-error.log
