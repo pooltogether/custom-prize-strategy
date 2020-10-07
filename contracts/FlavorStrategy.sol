@@ -4,7 +4,7 @@ pragma solidity ^0.6.12;
 import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
 import "@nomiclabs/buidler/console.sol";
 
-contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
+contract FlavorStrategy is PeriodicPrizeStrategy {
 
   // mapping from asset symbol to pod pod address
   mapping(string => address) public podAddresses;
@@ -23,7 +23,6 @@ contract FlavorStrategy is PeriodicPrizeStrategy, Ownable {
     RNGInterface _rng,
     address[] memory _externalErc20s
   ) public initializer {
-    __Ownable_init();
     // TODO: rng isn't needed for flavor strategy
     PeriodicPrizeStrategy.initialize(
       _trustedForwarder,
