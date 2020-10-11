@@ -36,6 +36,8 @@ contract MultipleWinnersBuilder {
       numberOfWinners
     );
 
+    mw.transferOwnership(msg.sender);
+
     return mw;
   }
 }
