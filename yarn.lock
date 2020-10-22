@@ -680,35 +680,29 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.0.tgz#3e6b3a7662d8ed64271ade96ef42655db983fd9d"
   integrity sha512-bUOmkSoPkjnUyMiKo6RYnb0VHBk5D9KKDAgNLzF41aqAM3TeE0yGdFF5dVRcV60pZdJLlyFT/jjXIZCWyyEzAQ==
 
-"@pooltogether/current-pool-data@^3.0.0-alpha.33":
-  version "3.0.0-alpha.33"
-  resolved "https://registry.yarnpkg.com/@pooltogether/current-pool-data/-/current-pool-data-3.0.0-alpha.33.tgz#d873e581148181d9d2ec0c7ef5b6cb9669bd419d"
-  integrity sha512-65L1gz+fGXDJ4z5LRnLnHQ+ogcL6cI/wjiSmOalJeTEt6aMrl9O0fMXI6gbAEi+n8iobrF62bkuBxCqU8OlMtQ==
-
 "@pooltogether/fixed-point@pooltogether/fixed-point.git#0.1.0-upgradeable.1":
   version "0.1.0"
   resolved "https://codeload.github.com/pooltogether/fixed-point/tar.gz/422e81ae8025680b870c7242ea9c01df72d72baf"
   dependencies:
     "@openzeppelin/contracts-ethereum-package" "^3.0.0"
 
-"@pooltogether/pooltogether-contracts@^3.0.0-alpha.41":
-  version "3.0.0-alpha.41"
-  resolved "https://registry.yarnpkg.com/@pooltogether/pooltogether-contracts/-/pooltogether-contracts-3.0.0-alpha.41.tgz#4b4cca39c74a7f1dd3f352650ceb181ef3a8e83e"
-  integrity sha512-Jbxc7A8Nnh95yPBkF2UuhIdsxJK/48tZwdovKEWS1iRtTWBHXDbdjiJJsUwmGg2sZ3BkV5ynl4PaqmBsKlN3XQ==
+"@pooltogether/pooltogether-contracts@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@pooltogether/pooltogether-contracts/-/pooltogether-contracts-3.0.1.tgz#e090725d2b1d7335aff73f0bee804c1ec32c99bb"
+  integrity sha512-UlrdRsPGCN0iTrzMNNeEhOOWzYYKl2sTvEn5ZNyK3paQPaWUQjeH6Ezf/eu0t2LBh32CCwOYqxbH6wVEENbw3A==
   dependencies:
     "@opengsn/gsn" "^2.0.1"
     "@openzeppelin/contracts-ethereum-package" "3.0.0"
-    "@pooltogether/current-pool-data" "^3.0.0-alpha.33"
     "@pooltogether/fixed-point" pooltogether/fixed-point.git#0.1.0-upgradeable.1
-    "@pooltogether/pooltogether-rng-contracts" "^1.0.0-alpha.7"
+    "@pooltogether/pooltogether-rng-contracts" "^1.0.0"
     "@pooltogether/uniform-random-number" pooltogether/uniform-random-number#solidity-0.6
     deploy-eip-1820 "1.0.0"
     sortition-sum-tree-factory "0.1.0"
 
-"@pooltogether/pooltogether-rng-contracts@^1.0.0-alpha.7":
-  version "1.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@pooltogether/pooltogether-rng-contracts/-/pooltogether-rng-contracts-1.0.0-alpha.7.tgz#362f524eff35e413b1924cf3188fc76f836fa6e1"
-  integrity sha512-1uVTVwAF/qLiZghUrV6DXs2ngqOtwMZ90fCTh9FP4B8YC7nqXkeUpNPVGvhm5Iq0IX5Cdvq9Slthz1O1qgMdoA==
+"@pooltogether/pooltogether-rng-contracts@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@pooltogether/pooltogether-rng-contracts/-/pooltogether-rng-contracts-1.0.0.tgz#191d155dc960559cce06b7ec3b0f9ed2caed0f46"
+  integrity sha512-jQub/+qPLQwTFtbBCvvyIEqxJDEBEV/hgLKnuocBg2/GySWtHLz67WCy17bNn1hZw8nWIt8Ih8h+7iT2UJhtmQ==
 
 "@pooltogether/uniform-random-number@pooltogether/uniform-random-number#solidity-0.6":
   version "0.1.0"
