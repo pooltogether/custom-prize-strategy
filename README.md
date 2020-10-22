@@ -30,7 +30,7 @@ Clone the [PoolTogether Contracts](https://github.com/pooltogether/pooltogether-
 
 ```
 $ cd ..
-$ yarn clone git@github.com:pooltogether/pooltogether-pool-contracts.git
+$ git clone git@github.com:pooltogether/pooltogether-pool-contracts.git
 $ cd pooltogether-pool-contracts
 $ git checkout version-3
 ```
